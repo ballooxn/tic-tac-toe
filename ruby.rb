@@ -2,9 +2,9 @@
 
 class TicTacToe
   def initialize
-    @game_board = [[_, _, _], [_, _, _], [_, _, _]]
+    @game_board = [%w[_ _ _], %w[_ _ _], %w[_ _ _]]
     @winner = "Noone"
-    @player = "o"
+    @player = "x"
     @total_pieces_placed = 0
     play_game
   end
@@ -12,20 +12,49 @@ class TicTacToe
   # Main method.
   def play_game
     while @winner == "Noone"
-      @player = "x" if @player == "o" # Make it the new players turn
+      puts ""
+      puts "Player: #{@player}"
+      x = 5
+      y = 5
       # Get the coordinates to place the player's piece, then place it on the board
-      puts "Coordinate to put your piece. ex: 0,2"
-      coordinate = gets.chomp
-      coordinate = coordinate.split(",") # Example: [0,2]
-      place_on_board(coordinate[0], coordinate[1])
+      square_not_taken = false
+      until square_not_taken == true
 
+        until x >= 0 && x <= 2
+          print "X-Coordinate: "
+          x = gets.chomp.to_i
+        end
+        until y >= 0 && y <= 2
+          print "Y-Coordinate: "
+          y = gets.chomp.to_i
+        end
+        square_not_taken = true if @game_board[x][y] == "_"
+        next if square_not_taken
+
+        x = 5
+        y = 5
+        puts "That square is taken, try a different square!"
+      end
+      place_on_board(x, y)
+      display_board
+
+      @total_pieces_placed += 1
       # On the 5th turn, the x player can place their 3rd piece.
       # We're only checking for a winner once 3 or more pieces of the same kind are on the board
-      @winner = winner? if @total_pieces_placed >= 5
+      answer = winner?(x, y) if @total_pieces_placed >= 5
+      puts answer
+      @winner = @player if answer
       unless @winner == "Noone" # if theres a winner, end the game
         end_game
         return
       end
+      # Swap players
+      @player = if @player == "x"
+                  "o"
+                else
+                  "x"
+                end
+
     end
     end_game
   end
@@ -37,14 +66,33 @@ class TicTacToe
 
   # Display the board in the terminal like an actual 3x3 board.
   def display_board
+    puts ""
+    3.times do |i|
+      3.times do |j|
+        print @game_board[i][j]
+      end
+      puts ""
+    end
+    puts ""
   end
 
   # Method for determining if the player has won
 
   def winner?(x, y)
-    # Check diagonally, vertically, and side to side.
-    return "x"
-    "o"
+    # Check vertically
+    return true if @game_board[x][y - 1] == @player && @game_board[x][y - 2] == @player
+    # Check horizontally
+    return true if @game_board[x - 1][y] == @player && @game_board[x - 2][y] == @player
+    # Check diagonally left
+    return true if @game_board[x - 1][y - 1] == @player && @game_board[x - 2][y - 2] == @player
+
+    return true if (x == 2 && y.zero?) && (@game_board[x - 1][y + 1] == @player && @game_board[x - 2][y + 2] == @player)
+
+    return true if (x == 1 && y == 1) && (@game_board[x - 1][y + 1] == @player && @game_board[x + 1][y - 1] == @player)
+
+    # there is no winner
+
+    false
   end
 
   def end_game
