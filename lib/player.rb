@@ -1,9 +1,8 @@
-class Player
+class Player # rubocop:disable Style/Documentation
   attr_accessor :score
-  attr_reader :name
+  attr_reader :letter
 
-  def initialize(name)
-    @name = name
-    @score = 0
+  def initialize(letter)
+    @letter = letter
   end
 end
