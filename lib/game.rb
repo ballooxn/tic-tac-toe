@@ -6,9 +6,10 @@ class Game # rubocop:disable Style/Documentation
   def initialize
     @player1 = "X"
     @player2 = "O"
+    @winner = nil
 
     @board = [%w[_ _ _], %w[_ _ _], %w[_ _ _]]
-    @num_of_turns = 0
+    @turns = 0
 
     Display.intro
     game_loop
@@ -17,22 +18,16 @@ class Game # rubocop:disable Style/Documentation
   protected
 
   def game_loop
-    winner = false
     current_player = "O"
-    while winner == false
+    until game_over?(current_player)
       # swap players each turn
-      current_player == "X" ? current_player = "O" : current_player = "X" # rubocop:disable Style/ConditionalAssignment
+      current_player = current_player == "X" ? "O" : "X"
 
       place_on_board(current_player)
-      winner = game_over?(current_player)
-      @num_of_turns += 1
+      @turns += 1
       Display.display_board(@board)
     end
-    if winner == "Tie"
-      Display.tie
-    else
-      Display.end_game(winner)
-    end
+    @winner == "Tie" ? Display.tie : Display.end_game(@winner)
   end
 
   def place_on_board(player)
@@ -67,7 +62,7 @@ class Game # rubocop:disable Style/Documentation
     return player if @board[0][0] == player && @board[1][1] == player && @board[2][2] == player
     return player if @board[0][2] == player && @board[1][1] == player && @board[2][0] == player
 
-    return "Tie" if @num_of_turns == 8
+    return "Tie" if @turns >= 8
 
     false
   end
