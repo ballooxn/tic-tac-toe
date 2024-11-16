@@ -36,6 +36,25 @@ describe Game do # rubocop:disable Metrics/BlockLength
 
   describe "valid_placement" do
     context "when given valid placement" do
+      subject(:check_placement) { described_class.new }
+      it "returns true" do
+        expect(check_placement.valid_placement?(0, 0)).to be_truthy
+      end
+    end
+
+    context "when given invalid placement" do
+      subject(:check_placement) { described_class.new }
+      it "returns false" do
+        expect(check_placement.valid_placement?(8, 3)).to be_falsey
+      end
+    end
+
+    context "when placement taken" do
+      board = [%w[O _ _], %w[_ _ _], %w[_ _ _]]
+      subject(:check_placement) { described_class.new(board) }
+      it "returns false" do
+        expect(check_placement.valid_placement?(0, 0)).to be_falsey
+      end
     end
   end
 
