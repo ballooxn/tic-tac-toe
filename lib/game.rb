@@ -1,21 +1,18 @@
 require_relative "display"
-require_relative "player"
 
 class Game # rubocop:disable Style/Documentation
   include Display
-  def initialize
+  def initialize(board = [%w[_ _ _], %w[_ _ _], %w[_ _ _]], turns = 0)
     @player1 = "X"
     @player2 = "O"
     @winner = nil
 
-    @board = [%w[_ _ _], %w[_ _ _], %w[_ _ _]]
-    @turns = 0
+    @board = board
+    @turns = turns
 
     Display.intro
     game_loop
   end
-
-  protected
 
   def game_loop
     current_player = "O"
