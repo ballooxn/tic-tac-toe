@@ -5,7 +5,7 @@ class Game # rubocop:disable Style/Documentation
   def initialize(board = [%w[_ _ _], %w[_ _ _], %w[_ _ _]], turns = 0)
     @player1 = "X"
     @player2 = "O"
-    @winner = nil
+    @winner = false
 
     @board = board
     @turns = turns
@@ -18,7 +18,7 @@ class Game # rubocop:disable Style/Documentation
 
   def game_loop
     current_player = "O"
-    until game_over?(current_player)
+    until @winner
       # swap players each turn
       current_player = current_player == "X" ? "O" : "X"
 
@@ -30,8 +30,7 @@ class Game # rubocop:disable Style/Documentation
     @winner == "Tie" ? Display.tie : Display.end_game(@winner)
   end
 
-  def place_on_board(player)
-    x, y = 5
+  def place_on_board(player, x = -1, y = -1)
     until valid_placement?(x, y)
       Display.choose_placement(player)
       placement = gets.chomp.split
