@@ -9,7 +9,9 @@ class Game # rubocop:disable Style/Documentation
 
     @board = board
     @turns = turns
+  end
 
+  def start_game
     Display.intro
     game_loop
   end
@@ -23,6 +25,7 @@ class Game # rubocop:disable Style/Documentation
       place_on_board(current_player)
       @turns += 1
       Display.display_board(@board)
+      @winner = game_over?(current_player)
     end
     @winner == "Tie" ? Display.tie : Display.end_game(@winner)
   end
