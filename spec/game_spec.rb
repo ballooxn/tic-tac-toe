@@ -1,6 +1,9 @@
 require_relative "../lib/game"
 
 describe Game do
+  describe "game_loop" do
+  end
+
   describe "place_on_board" do
   end
 

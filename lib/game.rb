@@ -50,12 +50,9 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def game_over?(player)
-    # check horizontally
-    @board.each do |row|
+    # check horizontally + vertically
+    @board.each_with_index do |row, i|
       return player if row[0] == player && row[1] == player && row[2] == player
-    end
-    # check vertically
-    3.times do |i|
       return player if @board[0][i] == player && @board[1][i] == player && @board[2][i] == player
     end
     # check diagonally
